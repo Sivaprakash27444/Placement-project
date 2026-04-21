@@ -2,345 +2,263 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>LeaveFlow - Manager Dashboard</title>
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<title>S4 Limited &mdash; Manager Dashboard</title>
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <style>
+
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'Inter',sans-serif;background:#f1f5f9;display:flex;min-height:100vh}
-.sidebar{width:260px;background:linear-gradient(180deg,#0f0c29,#1a0533,#2d1b69);min-height:100vh;position:fixed;top:0;left:0;bottom:0;display:flex;flex-direction:column;z-index:50;box-shadow:4px 0 24px rgba(0,0,0,0.25)}
-.s-header{padding:22px 20px;border-bottom:1px solid rgba(255,255,255,0.07)}
-.s-logo{display:flex;align-items:center;gap:12px}
-.s-logo-ic{width:42px;height:42px;background:linear-gradient(135deg,#f093fb,#f5576c);border-radius:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0;box-shadow:0 4px 14px rgba(240,147,251,0.35)}
-.s-logo-ic i{color:white;font-size:19px}
-.s-logo-name{font-size:19px;font-weight:800;color:white;letter-spacing:-.5px}
-.s-logo-tag{font-size:10px;color:rgba(255,255,255,0.3)}
-.s-user{padding:14px 20px;border-bottom:1px solid rgba(255,255,255,0.07);display:flex;align-items:center;gap:10px}
-.s-av{width:40px;height:40px;border-radius:12px;background:linear-gradient(135deg,#f093fb,#f5576c);display:flex;align-items:center;justify-content:center;color:white;font-weight:700;font-size:17px;flex-shrink:0}
-.s-name{font-size:13px;font-weight:600;color:white}
-.s-badge{display:inline-block;background:rgba(240,147,251,0.2);color:#f9a8d4;font-size:10px;padding:2px 8px;border-radius:8px;font-weight:600;margin-top:3px}
-.s-nav{padding:14px 12px;flex:1}
-.s-sec{font-size:10px;color:rgba(255,255,255,0.22);font-weight:600;letter-spacing:.08em;text-transform:uppercase;padding:10px 10px 5px}
-.s-link{display:flex;align-items:center;gap:11px;padding:10px 12px;border-radius:10px;color:rgba(255,255,255,0.48);text-decoration:none;font-size:13px;font-weight:500;margin-bottom:2px;transition:all .18s}
-.s-link:hover{background:rgba(255,255,255,0.06);color:rgba(255,255,255,0.85)}
-.s-link.active{background:rgba(240,147,251,0.15);color:white;box-shadow:inset 2px 0 0 #f093fb}
-.s-link i{width:15px;text-align:center;font-size:13px}
-.s-nbadge{background:#f59e0b;color:white;font-size:10px;padding:2px 7px;border-radius:10px;margin-left:auto;font-weight:600}
-.s-foot{padding:14px 20px;border-top:1px solid rgba(255,255,255,0.07)}
-.s-out{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:10px;color:rgba(255,255,255,0.38);text-decoration:none;font-size:13px;font-weight:500;transition:all .18s}
-.s-out:hover{background:rgba(239,68,68,0.12);color:#f87171}
-.main{margin-left:260px;flex:1;padding:28px 30px}
-.topbar{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:26px}
-.pg-title{font-size:23px;font-weight:800;color:#0f172a;letter-spacing:-.5px}
+body{font-family:'Inter',sans-serif;background:#f0f4f8;min-height:100vh;display:flex}
+.sb{width:256px;background:linear-gradient(180deg,#0f0c29,#1a0533,#2d1b69);position:fixed;
+  top:0;left:0;bottom:0;display:flex;flex-direction:column;
+  box-shadow:4px 0 24px rgba(0,0,0,.3);z-index:50}
+.sb-hd{padding:20px 18px;border-bottom:1px solid rgba(255,255,255,.07);
+  display:flex;align-items:center;gap:11px}
+.sb-logo{width:40px;height:40px;background:linear-gradient(135deg,#f093fb,#f5576c);
+  border-radius:11px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.sb-logo i{color:#fff;font-size:18px}
+.sb-co{font-size:13px;font-weight:800;color:#fff;letter-spacing:-.3px}
+.sb-tag{font-size:10px;color:rgba(255,255,255,.35)}
+.sb-user{padding:13px 18px;border-bottom:1px solid rgba(255,255,255,.07);
+  display:flex;align-items:center;gap:10px}
+.sb-av{width:36px;height:36px;border-radius:10px;background:linear-gradient(135deg,#f093fb,#f5576c);
+  display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;
+  font-size:15px;flex-shrink:0}
+.sb-un{font-size:13px;font-weight:600;color:#fff}
+.sb-ud{font-size:11px;color:rgba(255,255,255,.4)}
+.sb-badge{display:inline-block;background:rgba(102,126,234,.25);color:#a5b4fc;
+  font-size:10px;padding:2px 8px;border-radius:10px;font-weight:600;margin-top:2px}
+.sb-nav{padding:12px 10px;flex:1;overflow-y:auto}
+.sb-lbl{font-size:10px;color:rgba(255,255,255,.25);font-weight:600;
+  letter-spacing:.09em;text-transform:uppercase;padding:8px 12px 4px}
+.sb-a{display:flex;align-items:center;gap:11px;padding:10px 12px;border-radius:10px;
+  color:rgba(255,255,255,.5);text-decoration:none;font-size:13px;font-weight:500;
+  margin-bottom:2px;transition:all .2s}
+.sb-a:hover{background:rgba(255,255,255,.06);color:rgba(255,255,255,.85)}
+.sb-a.on{background:rgba(102,126,234,.22);color:#fff;box-shadow:inset 2px 0 0 #667eea}
+.sb-a i{width:15px;text-align:center;font-size:14px}
+.sb-ft{padding:13px 18px;border-top:1px solid rgba(255,255,255,.07)}
+.sb-out{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:10px;
+  color:rgba(255,255,255,.38);text-decoration:none;font-size:13px;font-weight:500;transition:all .2s}
+.sb-out:hover{background:rgba(239,68,68,.12);color:#f87171}
+.main{margin-left:256px;flex:1;padding:26px 30px}
+.topbar{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:24px}
+.pg-title{font-size:22px;font-weight:800;color:#0f172a;letter-spacing:-.5px}
 .pg-sub{font-size:13px;color:#64748b;margin-top:3px}
-.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:22px}
-.kpi{background:white;border-radius:16px;padding:20px 20px 16px;box-shadow:0 1px 6px rgba(0,0,0,0.05);border:1px solid #f1f5f9;transition:transform .2s,box-shadow .2s}
-.kpi:hover{transform:translateY(-3px);box-shadow:0 8px 24px rgba(0,0,0,0.08)}
-.kpi-ic{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:18px;margin-bottom:14px}
-.i1{background:#fdf4ff;color:#a855f7}
-.i2{background:#eff6ff;color:#3b82f6}
-.i3{background:#f0fdf4;color:#16a34a}
-.i4{background:#fff7ed;color:#ea580c}
-.kpi-val{font-size:34px;font-weight:900;color:#0f172a;letter-spacing:-1.5px;line-height:1}
-.kpi-lbl{font-size:12px;color:#64748b;font-weight:500;margin-top:5px}
-.kpi-note{font-size:11px;font-weight:600;margin-top:8px;color:#94a3b8}
-.tabs{display:flex;gap:4px;background:white;padding:5px;border-radius:13px;border:1px solid #f1f5f9;box-shadow:0 1px 6px rgba(0,0,0,0.04);margin-bottom:20px;width:fit-content}
-.tab{padding:8px 18px;border-radius:9px;font-size:13px;font-weight:600;color:#64748b;cursor:pointer;transition:all .18s;user-select:none}
-.tab.active{background:linear-gradient(135deg,#667eea,#764ba2);color:white;box-shadow:0 4px 12px rgba(102,126,234,0.3)}
-.tab-content{display:none}
-.tab-content.active{display:block}
-.row2{display:grid;grid-template-columns:2fr 1fr;gap:18px;margin-bottom:22px}
-.card{background:white;border-radius:16px;padding:22px 24px;box-shadow:0 1px 6px rgba(0,0,0,0.05);border:1px solid #f1f5f9;margin-bottom:20px}
+.card{background:#fff;border-radius:15px;padding:20px 22px;
+  box-shadow:0 1px 6px rgba(0,0,0,.05);border:1px solid #f0f4f8;margin-bottom:20px}
 .card-hd{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px}
-.card-title{font-size:14px;font-weight:700;color:#0f172a;display:flex;align-items:center;gap:7px}
-.card-title i{color:#a855f7}
-.cnt-badge{background:#f1f5f9;color:#64748b;font-size:11px;padding:3px 9px;border-radius:20px;font-weight:600}
-.pend-badge{background:#fffbeb;color:#d97706;font-size:11px;padding:3px 9px;border-radius:20px;font-weight:600}
+.card-title{font-size:13px;font-weight:700;color:#0f172a;display:flex;align-items:center;gap:7px}
+.card-title i{color:#667eea}
+.cnt{background:#f1f5f9;color:#64748b;font-size:11px;padding:3px 9px;border-radius:20px;font-weight:600}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:20px}
+.chip{display:inline-flex;align-items:center;gap:6px;background:#fff;
+  border:1px solid #e8edf2;border-radius:8px;padding:5px 11px;
+  font-size:12px;color:#475569;font-weight:500;box-shadow:0 1px 4px rgba(0,0,0,.04)}
+.chip i{color:#667eea;font-size:11px}
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:20px}
+.kpi{background:#fff;border-radius:14px;padding:18px 20px;
+  box-shadow:0 1px 6px rgba(0,0,0,.05);border:1px solid #f0f4f8;position:relative;overflow:hidden}
+.kpi::before{content:'';position:absolute;top:0;left:0;right:0;height:3px}
+.k1::before{background:linear-gradient(90deg,#667eea,#764ba2)}
+.k2::before{background:linear-gradient(90deg,#10b981,#059669)}
+.k3::before{background:linear-gradient(90deg,#f59e0b,#d97706)}
+.k4::before{background:linear-gradient(90deg,#ef4444,#dc2626)}
+.kpi-ic{width:42px;height:42px;border-radius:11px;display:flex;align-items:center;
+  justify-content:center;font-size:17px;margin-bottom:12px}
+.ki1{background:#ede9fe;color:#7c3aed}.ki2{background:#dcfce7;color:#16a34a}
+.ki3{background:#fef3c7;color:#d97706}.ki4{background:#fee2e2;color:#dc2626}
+.kpi-v{font-size:30px;font-weight:800;color:#0f172a;letter-spacing:-1px}
+.kpi-l{font-size:12px;color:#64748b;font-weight:500;margin-top:2px}
 table{width:100%;border-collapse:collapse}
-th{font-size:11px;font-weight:600;color:#94a3b8;text-transform:uppercase;letter-spacing:.06em;padding:9px 12px;border-bottom:1px solid #f1f5f9;white-space:nowrap}
-td{padding:12px 12px;font-size:13px;color:#334155;border-bottom:1px solid #f8fafc;vertical-align:middle}
-tr:last-child td{border:none}
-tr:hover td{background:#fafbff}
+.th{font-size:11px;font-weight:600;color:#94a3b8;text-transform:uppercase;
+  letter-spacing:.06em;padding:10px 12px;border-bottom:1px solid #f1f5f9;white-space:nowrap}
+.td{padding:12px 12px;font-size:13px;color:#334155;border-bottom:1px solid #f8fafc;vertical-align:middle}
+tr:last-child .td{border:none}
+tr:hover .td{background:#fafbff}
+.st{display:inline-flex;align-items:center;gap:4px;padding:4px 10px;border-radius:20px;font-size:11px;font-weight:600}
+.st-a{background:#f0fdf4;color:#16a34a}.st-p{background:#fffbeb;color:#d97706}.st-r{background:#fef2f2;color:#dc2626}
+.lt{background:#ede9fe;color:#7c3aed;font-size:10px;padding:3px 8px;border-radius:6px;font-weight:600}
+.empty{text-align:center;padding:40px;color:#94a3b8;font-size:13px}
+.empty i{font-size:38px;display:block;margin-bottom:10px;opacity:.35}
+.prog{margin-bottom:13px}
+.prog-top{display:flex;justify-content:space-between;font-size:12px;margin-bottom:5px}
+.prog-lbl{color:#64748b;font-weight:500;display:flex;align-items:center;gap:6px}
+.prog-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.prog-val{color:#0f172a;font-weight:600}
+.prog-bar{height:7px;background:#f1f5f9;border-radius:4px;overflow:hidden}
+.prog-fill{height:100%;border-radius:4px}
+.pg{background:linear-gradient(90deg,#10b981,#059669)}
+.pr{background:linear-gradient(90deg,#ef4444,#dc2626)}
+.pp{background:linear-gradient(90deg,#667eea,#764ba2)}
+.py{background:linear-gradient(90deg,#f59e0b,#d97706)}
+
+.sb-badge{background:rgba(240,147,251,.2)!important;color:#f9a8d4!important}
+.sb-a.on{background:rgba(240,147,251,.15)!important;box-shadow:inset 2px 0 0 #f093fb!important}
+.pend-pill{background:#f59e0b;color:#fff;font-size:10px;padding:2px 7px;border-radius:10px;margin-left:auto;font-weight:600}
+.two-grid{display:grid;grid-template-columns:2fr 1fr;gap:18px;margin-bottom:20px}
 .emp-cell{display:flex;align-items:center;gap:9px}
-.emp-av{width:34px;height:34px;border-radius:10px;background:linear-gradient(135deg,#667eea,#764ba2);display:flex;align-items:center;justify-content:center;color:white;font-weight:700;font-size:13px;flex-shrink:0}
+.emp-av{width:32px;height:32px;border-radius:9px;background:linear-gradient(135deg,#667eea,#764ba2);
+  display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:12px;flex-shrink:0}
 .emp-nm{font-size:13px;font-weight:600;color:#0f172a}
 .emp-dep{font-size:11px;color:#94a3b8}
-.pill{display:inline-flex;align-items:center;gap:4px;padding:4px 10px;border-radius:20px;font-size:11px;font-weight:600}
-.pa{background:#f0fdf4;color:#16a34a}
-.pp{background:#fffbeb;color:#d97706}
-.pr{background:#fef2f2;color:#dc2626}
-.lt{background:#ede9fe;color:#7c3aed;font-size:10px;padding:3px 8px;border-radius:6px;font-weight:600}
-.btn-app{display:inline-flex;align-items:center;gap:4px;padding:5px 11px;background:linear-gradient(135deg,#10b981,#059669);border:none;border-radius:7px;color:white;font-size:11px;font-weight:600;text-decoration:none;transition:all .15s}
-.btn-app:hover{transform:translateY(-1px);color:white;box-shadow:0 4px 10px rgba(16,185,129,0.3)}
-.btn-rej{display:inline-flex;align-items:center;gap:4px;padding:5px 11px;background:linear-gradient(135deg,#ef4444,#dc2626);border:none;border-radius:7px;color:white;font-size:11px;font-weight:600;text-decoration:none;margin-left:5px;transition:all .15s}
-.btn-rej:hover{transform:translateY(-1px);color:white;box-shadow:0 4px 10px rgba(239,68,68,0.3)}
+.btn-app{display:inline-flex;align-items:center;gap:4px;padding:5px 12px;
+  background:linear-gradient(135deg,#10b981,#059669);border:none;border-radius:7px;
+  color:#fff;font-size:11px;font-weight:600;text-decoration:none;transition:all .15s}
+.btn-app:hover{transform:translateY(-1px);color:#fff;box-shadow:0 4px 10px rgba(16,185,129,.3)}
+.btn-rej{display:inline-flex;align-items:center;gap:4px;padding:5px 12px;
+  background:linear-gradient(135deg,#ef4444,#dc2626);border:none;border-radius:7px;
+  color:#fff;font-size:11px;font-weight:600;text-decoration:none;margin-left:5px;transition:all .15s}
+.btn-rej:hover{transform:translateY(-1px);color:#fff;box-shadow:0 4px 10px rgba(239,68,68,.3)}
 .att-row{display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid #f8fafc}
 .att-row:last-child{border:none}
-.att-av{width:38px;height:38px;border-radius:11px;background:linear-gradient(135deg,#667eea,#764ba2);display:flex;align-items:center;justify-content:center;color:white;font-weight:700;font-size:15px;flex-shrink:0}
-.att-info{min-width:120px}
-.att-name{font-size:13px;font-weight:600;color:#0f172a}
-.att-dep{font-size:11px;color:#94a3b8}
-.att-bar-wrap{flex:1}
-.att-bar-top{display:flex;justify-content:space-between;font-size:11px;margin-bottom:4px}
+.att-av{width:34px;height:34px;border-radius:10px;background:linear-gradient(135deg,#667eea,#764ba2);
+  display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:13px;flex-shrink:0}
+.att-info{min-width:130px}
+.att-nm{font-size:13px;font-weight:600;color:#0f172a}
+.att-dp{font-size:11px;color:#94a3b8}
+.att-bw{flex:1}
+.att-bt{display:flex;justify-content:space-between;font-size:11px;margin-bottom:4px}
 .att-bar{height:7px;background:#f1f5f9;border-radius:4px;overflow:hidden}
-.att-fill{height:100%;border-radius:4px;transition:width 1s ease}
-.bg{background:linear-gradient(90deg,#10b981,#059669)}
-.by{background:linear-gradient(90deg,#f59e0b,#d97706)}
-.br2{background:linear-gradient(90deg,#ef4444,#dc2626)}
-.att-sl{font-size:10px;padding:3px 9px;border-radius:10px;font-weight:600;white-space:nowrap;min-width:68px;text-align:center}
-.slg{background:#f0fdf4;color:#16a34a}
-.sly{background:#fffbeb;color:#d97706}
-.slr{background:#fef2f2;color:#dc2626}
-.edit-btn{background:#f8fafc;border:1.5px solid #e2e8f0;border-radius:8px;padding:4px 10px;font-size:11px;font-weight:600;color:#475569;cursor:pointer;transition:all .2s;font-family:'Inter',sans-serif}
-.edit-btn:hover{background:#ede9fe;border-color:#a5b4fc;color:#7c3aed}
-.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:1000;align-items:center;justify-content:center}
-.modal-overlay.show{display:flex}
-.modal-box{background:white;border-radius:20px;padding:32px 36px;width:400px;box-shadow:0 24px 60px rgba(0,0,0,0.2)}
-.modal-title{font-size:18px;font-weight:800;color:#0f172a;margin-bottom:6px}
-.modal-sub{font-size:13px;color:#64748b;margin-bottom:24px}
-.modal-field{margin-bottom:16px}
-.modal-label{font-size:12px;font-weight:600;color:#374151;text-transform:uppercase;letter-spacing:.04em;margin-bottom:7px;display:block}
-.modal-input{width:100%;padding:11px 13px;border:1.5px solid #e2e8f0;border-radius:10px;font-size:14px;color:#0f172a;font-family:'Inter',sans-serif;outline:none;transition:all .2s}
-.modal-input:focus{border-color:#667eea;box-shadow:0 0 0 3px rgba(102,126,234,0.1)}
-.modal-btns{display:flex;gap:10px;margin-top:8px}
-.modal-save{flex:1;padding:11px;background:linear-gradient(135deg,#667eea,#764ba2);border:none;border-radius:10px;color:white;font-size:13px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif}
-.modal-cancel{padding:11px 18px;background:#f8fafc;border:1.5px solid #e2e8f0;border-radius:10px;color:#64748b;font-size:13px;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif}
-.stat-chips{display:flex;gap:10px;margin-bottom:20px;flex-wrap:wrap}
-.stat-chip{flex:1;min-width:80px;padding:14px 10px;border-radius:13px;text-align:center;border:1.5px solid transparent}
-.sc-g{background:#f0fdf4;border-color:#bbf7d0}
-.sc-y{background:#fffbeb;border-color:#fde68a}
-.sc-r{background:#fef2f2;border-color:#fecaca}
-.sc-val{font-size:22px;font-weight:800;margin-bottom:3px}
-.scg{color:#16a34a} .scy{color:#d97706} .scr{color:#dc2626}
-.sc-lbl{font-size:11px;color:#64748b;font-weight:500}
-.empty{text-align:center;padding:36px;color:#94a3b8}
-.empty i{font-size:36px;display:block;margin-bottom:10px;opacity:.35}
+.att-fill{height:100%;border-radius:4px}
+.ag{background:linear-gradient(90deg,#10b981,#059669)}
+.ay{background:linear-gradient(90deg,#f59e0b,#d97706)}
+.ar{background:linear-gradient(90deg,#ef4444,#dc2626)}
+.att-tag{font-size:10px;padding:3px 9px;border-radius:10px;font-weight:600;white-space:nowrap;min-width:66px;text-align:center}
+.tg{background:#f0fdf4;color:#16a34a}.ty{background:#fffbeb;color:#d97706}.tr{background:#fef2f2;color:#dc2626}
+.admin-notice{background:linear-gradient(135deg,#fef3c7,#fde68a);border:1px solid #f59e0b;
+  border-radius:11px;padding:12px 16px;margin-bottom:20px;font-size:13px;
+  color:#92400e;font-weight:500;display:flex;align-items:center;gap:9px}
 </style>
 </head>
 <body>
-
-<div class="sidebar">
-  <div class="s-header">
-    <div class="s-logo">
-      <div class="s-logo-ic"><i class="fas fa-shield-alt"></i></div>
-      <div><div class="s-logo-name">LeaveFlow</div><div class="s-logo-tag">Manager Portal</div></div>
-    </div>
+<div class="sb">
+  <div class="sb-hd">
+    <div class="sb-logo"><i class="fas fa-shield-alt"></i></div>
+    <div><div class="sb-co">S4 Limited</div><div class="sb-tag">LeaveFlow &middot; Manager</div></div>
   </div>
-  <div class="s-user">
-    <div class="s-av">M</div>
-    <div>
-      <div class="s-name">{{ name }}</div>
-      <div class="s-badge">Manager</div>
-    </div>
+  <div class="sb-user">
+    <div class="sb-av">M</div>
+    <div><div class="sb-un">{{ name }}</div><div class="sb-badge">Manager</div></div>
   </div>
-  <div class="s-nav">
-    <div class="s-sec">Management</div>
-    <a href="#overview" onclick="showTab('overview')" class="s-link active" id="nav-overview"><i class="fas fa-th-large"></i>Dashboard</a>
-    <a href="#requests" onclick="showTab('requests')" class="s-link" id="nav-requests"><i class="fas fa-inbox"></i>Leave Requests{% if pending_count > 0 %}<span class="s-nbadge">{{ pending_count }}</span>{% endif %}</a>
-    <a href="#attendance" onclick="showTab('attendance')" class="s-link" id="nav-attendance"><i class="fas fa-chart-bar"></i>Attendance</a>
-    <a href="#team" onclick="showTab('team')" class="s-link" id="nav-team"><i class="fas fa-users"></i>Team</a>
+  <div class="sb-nav">
+    <div class="sb-lbl">Management</div>
+    <a href="{% url 'manager_dashboard' %}" class="sb-a on"><i class="fas fa-th-large"></i>Dashboard</a>
+    <a href="#requests"    class="sb-a"><i class="fas fa-inbox"></i>Leave Requests
+      {% if pending_count > 0 %}<span class="pend-pill">{{ pending_count }}</span>{% endif %}</a>
+    <a href="#attendance"  class="sb-a"><i class="fas fa-chart-bar"></i>Team Attendance</a>
+    <a href="#team"        class="sb-a"><i class="fas fa-users"></i>Team Overview</a>
   </div>
-  <div class="s-foot">
-    <a href="{% url 'logout' %}" class="s-out"><i class="fas fa-sign-out-alt"></i>Sign Out</a>
-  </div>
+  <div class="sb-ft"><a href="{% url 'logout' %}" class="sb-out"><i class="fas fa-sign-out-alt"></i>Sign Out</a></div>
 </div>
 
 <div class="main">
   <div class="topbar">
     <div>
-      <div class="pg-title">Manager Dashboard 🛡️</div>
-      <div class="pg-sub">Team leave management and attendance monitoring</div>
+      <div class="pg-title">Manager Dashboard &#128737;</div>
+      <div class="pg-sub">S4 Limited &mdash; Team leave management &amp; attendance monitoring</div>
     </div>
   </div>
 
-  <!-- TAB: OVERVIEW -->
-  <div class="tab-content active" id="tab-overview">
-    <div class="kpis">
-      <div class="kpi"><div class="kpi-ic i1"><i class="fas fa-users"></i></div><div class="kpi-val">{{ total_emp }}</div><div class="kpi-lbl">Total Employees</div><div class="kpi-note">Active team members</div></div>
-      <div class="kpi"><div class="kpi-ic i2"><i class="fas fa-hourglass-half"></i></div><div class="kpi-val">{{ pending_count }}</div><div class="kpi-lbl">Pending Approvals</div><div class="kpi-note">{% if pending_count > 0 %}Needs attention{% else %}All clear{% endif %}</div></div>
-      <div class="kpi"><div class="kpi-ic i3"><i class="fas fa-check-double"></i></div><div class="kpi-val">{{ approved_count }}</div><div class="kpi-lbl">Approved</div><div class="kpi-note">This period</div></div>
-      <div class="kpi"><div class="kpi-ic i4"><i class="fas fa-file-alt"></i></div><div class="kpi-val">{{ total_leaves }}</div><div class="kpi-lbl">Total Requests</div><div class="kpi-note">All time</div></div>
-    </div>
-    <div class="row2">
-      <div class="card" style="margin:0">
-        <div class="card-hd"><div class="card-title"><i class="fas fa-inbox"></i>Recent Leave Requests</div>{% if pending_count > 0 %}<span class="pend-badge"><i class="fas fa-clock me-1"></i>{{ pending_count }} pending</span>{% else %}<span class="cnt-badge">{{ total_leaves }} total</span>{% endif %}</div>
-        <table>
-          <thead><tr><th>Employee</th><th>Type</th><th>Dates</th><th>Days</th><th>Status</th><th>Action</th></tr></thead>
-          <tbody>
-          {% for leave in leaves %}
-          <tr>
-            <td><div class="emp-cell"><div class="emp-av">{{ leave.employee.name|first }}</div><div><div class="emp-nm">{{ leave.employee.name }}</div><div class="emp-dep">{{ leave.employee.department }}</div></div></div></td>
-            <td><span class="lt">{{ leave.leave_type }}</span></td>
-            <td style="font-size:12px;color:#64748b">{{ leave.start_date }}<br>{{ leave.end_date }}</td>
-            <td><strong>{{ leave.days }}d</strong></td>
-            <td>{% if leave.status == 'APPROVED' %}<span class="pill pa"><i class="fas fa-check"></i>Approved</span>{% elif leave.status == 'REJECTED' %}<span class="pill pr"><i class="fas fa-times"></i>Rejected</span>{% else %}<span class="pill pp"><i class="fas fa-clock"></i>Pending</span>{% endif %}</td>
-            <td>{% if leave.status == 'PENDING' %}<a href="{% url 'update_status' leave.id 'APPROVED' %}" class="btn-app"><i class="fas fa-check"></i>Approve</a><a href="{% url 'update_status' leave.id 'REJECTED' %}" class="btn-rej"><i class="fas fa-times"></i>Reject</a>{% else %}<span style="color:#cbd5e1;font-size:12px">—</span>{% endif %}</td>
-          </tr>
-          {% empty %}
-          <tr><td colspan="6"><div class="empty"><i class="fas fa-inbox"></i>No requests found.</div></td></tr>
-          {% endfor %}
-          </tbody>
-        </table>
-      </div>
-      <div class="card" style="margin:0">
-        <div class="card-hd"><div class="card-title"><i class="fas fa-chart-pie"></i>Leave Overview</div></div>
-        <canvas id="leaveDonut" height="220"></canvas>
-        <div style="margin-top:14px">
-          <div style="display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid #f8fafc;font-size:12px"><span style="color:#64748b">Approved</span><strong style="color:#16a34a">{{ approved_count }}</strong></div>
-          <div style="display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid #f8fafc;font-size:12px"><span style="color:#64748b">Pending</span><strong style="color:#d97706">{{ pending_count }}</strong></div>
-          <div style="display:flex;justify-content:space-between;padding:7px 0;font-size:12px"><span style="color:#64748b">Rejected</span><strong style="color:#dc2626">{{ rejected_count }}</strong></div>
-        </div>
-      </div>
-    </div>
+  <div class="kpis">
+    <div class="kpi k1"><div class="kpi-ic ki1"><i class="fas fa-users"></i></div>
+      <div class="kpi-v">{{ total_emp }}</div><div class="kpi-l">Total Employees</div></div>
+    <div class="kpi k3"><div class="kpi-ic ki3"><i class="fas fa-hourglass-half"></i></div>
+      <div class="kpi-v">{{ pending_count }}</div><div class="kpi-l">Pending Approvals</div></div>
+    <div class="kpi k2"><div class="kpi-ic ki2"><i class="fas fa-check-double"></i></div>
+      <div class="kpi-v">{{ approved_count }}</div><div class="kpi-l">Approved</div></div>
+    <div class="kpi k4"><div class="kpi-ic ki4"><i class="fas fa-file-alt"></i></div>
+      <div class="kpi-v">{{ total_leaves }}</div><div class="kpi-l">Total Requests</div></div>
   </div>
 
-  <!-- TAB: REQUESTS -->
-  <div class="tab-content" id="tab-requests">
-    <div class="card">
-      <div class="card-hd"><div class="card-title"><i class="fas fa-inbox"></i>All Leave Requests</div><span class="cnt-badge">{{ total_leaves }} total</span></div>
+  <div class="admin-notice">
+    <i class="fas fa-lock"></i>
+    To <strong style="margin:0 3px">Approve or Reject</strong> leave requests, use the
+    <a href="/admin/employees/leaverequest/" style="color:#92400e;font-weight:700;margin:0 4px">Admin Panel &rarr;</a>
+    where you can approve/reject with one click.
+  </div>
+
+  <div class="two-grid" id="requests">
+    <div class="card" style="margin-bottom:0">
+      <div class="card-hd">
+        <div class="card-title"><i class="fas fa-inbox"></i>All Leave Requests</div>
+        {% if pending_count > 0 %}<span style="background:#fffbeb;color:#d97706;font-size:11px;padding:3px 9px;border-radius:20px;font-weight:600">{{ pending_count }} pending</span>
+        {% else %}<span class="cnt">{{ total_leaves }} total</span>{% endif %}
+      </div>
       <table>
-        <thead><tr><th>#</th><th>Employee</th><th>Dept</th><th>Type</th><th>From</th><th>To</th><th>Days</th><th>Reason</th><th>Status</th><th>Action</th></tr></thead>
+        <thead><tr>
+          <th class="th">Employee</th><th class="th">Type</th>
+          <th class="th">From</th><th class="th">To</th>
+          <th class="th">Days</th><th class="th">Status</th>
+        </tr></thead>
         <tbody>
         {% for leave in leaves %}
         <tr>
-          <td style="color:#94a3b8;font-size:12px">{{ forloop.counter }}</td>
-          <td><div class="emp-cell"><div class="emp-av">{{ leave.employee.name|first }}</div><div class="emp-nm">{{ leave.employee.name }}</div></div></td>
-          <td style="font-size:12px;color:#64748b">{{ leave.employee.department }}</td>
-          <td><span class="lt">{{ leave.leave_type }}</span></td>
-          <td style="font-size:12px">{{ leave.start_date }}</td>
-          <td style="font-size:12px">{{ leave.end_date }}</td>
-          <td><strong>{{ leave.days }}d</strong></td>
-          <td style="max-width:130px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:12px;color:#64748b">{{ leave.reason }}</td>
-          <td>{% if leave.status == 'APPROVED' %}<span class="pill pa"><i class="fas fa-check"></i>Approved</span>{% elif leave.status == 'REJECTED' %}<span class="pill pr"><i class="fas fa-times"></i>Rejected</span>{% else %}<span class="pill pp"><i class="fas fa-clock"></i>Pending</span>{% endif %}</td>
-          <td>{% if leave.status == 'PENDING' %}<a href="{% url 'update_status' leave.id 'APPROVED' %}" class="btn-app"><i class="fas fa-check"></i>Approve</a><a href="{% url 'update_status' leave.id 'REJECTED' %}" class="btn-rej"><i class="fas fa-times"></i>Reject</a>{% else %}<span style="color:#cbd5e1;font-size:12px">—</span>{% endif %}</td>
-        </tr>
-        {% empty %}
-        <tr><td colspan="10"><div class="empty"><i class="fas fa-inbox"></i>No requests.</div></td></tr>
-        {% endfor %}
-        </tbody>
-      </table>
-    </div>
-  </div>
-
-  <!-- TAB: ATTENDANCE -->
-  <div class="tab-content" id="tab-attendance">
-    <div class="stat-chips">
-      <div class="stat-chip sc-g"><div class="sc-val scg">{{ excellent }}</div><div class="sc-lbl">Excellent ≥90%</div></div>
-      <div class="stat-chip sc-y"><div class="sc-val scy">{{ average }}</div><div class="sc-lbl">Average 75–89%</div></div>
-      <div class="stat-chip sc-r"><div class="sc-val scr">{{ poor }}</div><div class="sc-lbl">Poor &lt;75%</div></div>
-    </div>
-    <div class="card">
-      <div class="card-hd"><div class="card-title"><i class="fas fa-chart-bar"></i>Employee Attendance Tracker</div><span class="cnt-badge">{{ total_emp }} employees</span></div>
-      {% for emp in employees %}
-      <div class="att-row">
-        <div class="att-av">{{ emp.name|first }}</div>
-        <div class="att-info">
-          <div class="att-name">{{ emp.name }}</div>
-          <div class="att-dep">{{ emp.department }} &bull; {{ emp.leave_balance }}d left</div>
-        </div>
-        <div class="att-bar-wrap">
-          <div class="att-bar-top">
-            <span style="color:#64748b;font-size:11px">Attendance</span>
-            <span style="font-weight:700;color:#0f172a;font-size:12px">{{ emp.attendance_percent }}%</span>
-          </div>
-          <div class="att-bar">
-            <div class="att-fill {% if emp.attendance_percent >= 90 %}bg{% elif emp.attendance_percent >= 75 %}by{% else %}br2{% endif %}" style="width:{{ emp.attendance_percent }}%"></div>
-          </div>
-        </div>
-        <div class="att-sl {% if emp.attendance_percent >= 90 %}slg{% elif emp.attendance_percent >= 75 %}sly{% else %}slr{% endif %}">
-          {% if emp.attendance_percent >= 90 %}Excellent{% elif emp.attendance_percent >= 75 %}Average{% else %}Poor{% endif %}
-        </div>
-        <button class="edit-btn" onclick="openEdit({{ emp.id }},'{{ emp.name }}',{{ emp.attendance_percent }},{{ emp.leave_balance }})"><i class="fas fa-pen me-1"></i>Edit</button>
-      </div>
-      {% empty %}
-      <div class="empty"><i class="fas fa-users"></i>No employees found. Add employees with role=EMPLOYEE in the admin panel.</div>
-      {% endfor %}
-    </div>
-  </div>
-
-  <!-- TAB: TEAM -->
-  <div class="tab-content" id="tab-team">
-    <div class="card">
-      <div class="card-hd"><div class="card-title"><i class="fas fa-users"></i>Full Team Overview</div><span class="cnt-badge">{{ total_emp }} members</span></div>
-      <table>
-        <thead><tr><th>Employee</th><th>Department</th><th>Email</th><th>Leave Balance</th><th>Attendance</th><th>Status</th><th>Edit</th></tr></thead>
-        <tbody>
-        {% for emp in employees %}
-        <tr>
-          <td><div class="emp-cell"><div class="emp-av">{{ emp.name|first }}</div><div><div class="emp-nm">{{ emp.name }}</div><div class="emp-dep">{{ emp.email }}</div></div></div></td>
-          <td><span class="lt">{{ emp.department }}</span></td>
-          <td style="font-size:12px;color:#64748b">{{ emp.email }}</td>
-          <td><strong>{{ emp.leave_balance }}</strong> <span style="color:#94a3b8;font-size:11px">days</span></td>
-          <td>
-            <strong style="{% if emp.attendance_percent >= 90 %}color:#16a34a{% elif emp.attendance_percent >= 75 %}color:#d97706{% else %}color:#dc2626{% endif %}">{{ emp.attendance_percent }}%</strong>
-            <div style="height:4px;background:#f1f5f9;border-radius:2px;margin-top:4px;width:80px;overflow:hidden"><div style="height:100%;border-radius:2px;width:{{ emp.attendance_percent }}%;background:{% if emp.attendance_percent >= 90 %}#10b981{% elif emp.attendance_percent >= 75 %}#f59e0b{% else %}#ef4444{% endif %}"></div></div>
+          <td class="td">
+            <div class="emp-cell">
+              <div class="emp-av">{{ leave.employee.name|first }}</div>
+              <div><div class="emp-nm">{{ leave.employee.name }}</div><div class="emp-dep">{{ leave.employee.department }}</div></div>
+            </div>
           </td>
-          <td><span class="att-sl {% if emp.attendance_percent >= 90 %}slg{% elif emp.attendance_percent >= 75 %}sly{% else %}slr{% endif %}">{% if emp.attendance_percent >= 90 %}Excellent{% elif emp.attendance_percent >= 75 %}Average{% else %}Poor{% endif %}</span></td>
-          <td><button class="edit-btn" onclick="openEdit({{ emp.id }},'{{ emp.name }}',{{ emp.attendance_percent }},{{ emp.leave_balance }})"><i class="fas fa-pen me-1"></i>Edit</button></td>
+          <td class="td"><span class="lt">{{ leave.leave_type }}</span></td>
+          <td class="td" style="font-size:12px">{{ leave.start_date }}</td>
+          <td class="td" style="font-size:12px">{{ leave.end_date }}</td>
+          <td class="td"><strong>{{ leave.days }}d</strong></td>
+          <td class="td">
+            {% if leave.status == 'APPROVED' %}<span class="st st-a"><i class="fas fa-check"></i>Approved</span>
+            {% elif leave.status == 'REJECTED' %}<span class="st st-r"><i class="fas fa-times"></i>Rejected</span>
+            {% else %}<span class="st st-p"><i class="fas fa-clock"></i>Pending</span>{% endif %}
+          </td>
         </tr>
         {% empty %}
-        <tr><td colspan="7"><div class="empty"><i class="fas fa-users"></i>No employees found.</div></td></tr>
+        <tr><td colspan="6"><div class="empty"><i class="fas fa-inbox"></i>No requests found.</div></td></tr>
         {% endfor %}
         </tbody>
       </table>
     </div>
+    <div class="card" style="margin-bottom:0">
+      <div class="card-hd"><div class="card-title"><i class="fas fa-chart-pie"></i>Overview</div></div>
+      <canvas id="donut" height="210"></canvas>
+      <div style="margin-top:14px">
+        <div style="display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid #f8fafc;font-size:12px"><span style="color:#64748b">Approved</span><strong style="color:#16a34a">{{ approved_count }}</strong></div>
+        <div style="display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid #f8fafc;font-size:12px"><span style="color:#64748b">Pending</span><strong style="color:#d97706">{{ pending_count }}</strong></div>
+        <div style="display:flex;justify-content:space-between;padding:7px 0;font-size:12px"><span style="color:#64748b">Rejected</span><strong style="color:#dc2626">{{ rejected_count }}</strong></div>
+      </div>
+    </div>
   </div>
-</div>
 
-<!-- EDIT ATTENDANCE MODAL -->
-<div class="modal-overlay" id="editModal">
-  <div class="modal-box">
-    <div class="modal-title">Edit Attendance</div>
-    <div class="modal-sub" id="modalSub">Update attendance for employee</div>
-    <form method="POST" id="editForm">
-      {% csrf_token %}
-      <div class="modal-field">
-        <label class="modal-label">Attendance Percentage (%)</label>
-        <input type="number" name="attendance_percent" id="attInput" class="modal-input" min="0" max="100" step="0.1" required>
+  <div class="card" id="attendance" style="margin-top:20px">
+    <div class="card-hd">
+      <div class="card-title"><i class="fas fa-chart-bar"></i>Team Attendance Tracker</div>
+      <span class="cnt">{{ total_emp }} employees</span>
+    </div>
+    {% for emp in employees %}
+    <div class="att-row">
+      <div class="att-av">{{ emp.name|first }}</div>
+      <div class="att-info"><div class="att-nm">{{ emp.name }}</div><div class="att-dp">{{ emp.department }} &middot; {{ emp.leave_balance }}d left</div></div>
+      <div class="att-bw">
+        <div class="att-bt"><span style="color:#64748b">Attendance</span><span style="font-weight:700;color:#0f172a">{{ emp.attendance_percent }}%</span></div>
+        <div class="att-bar"><div class="att-fill {% if emp.attendance_percent >= 90 %}ag{% elif emp.attendance_percent >= 75 %}ay{% else %}ar{% endif %}" style="width:{{ emp.attendance_percent }}%"></div></div>
       </div>
-      <div class="modal-field">
-        <label class="modal-label">Leave Balance (days)</label>
-        <input type="number" name="leave_balance" id="balInput" class="modal-input" min="0" max="30" required>
+      <div class="att-tag {% if emp.attendance_percent >= 90 %}tg{% elif emp.attendance_percent >= 75 %}ty{% else %}tr{% endif %}">
+        {% if emp.attendance_percent >= 90 %}Excellent{% elif emp.attendance_percent >= 75 %}Average{% else %}Poor{% endif %}
       </div>
-      <div class="modal-btns">
-        <button type="button" class="modal-cancel" onclick="closeEdit()">Cancel</button>
-        <button type="submit" class="modal-save"><i class="fas fa-save me-1"></i>Save Changes</button>
-      </div>
-    </form>
+    </div>
+    {% empty %}
+    <div class="empty"><i class="fas fa-users"></i>No employees found.</div>
+    {% endfor %}
   </div>
 </div>
 
 <script>
-// Tabs
-function showTab(name){
-  document.querySelectorAll('.tab-content').forEach(t=>t.classList.remove('active'));
-  document.querySelectorAll('.s-link').forEach(l=>l.classList.remove('active'));
-  document.getElementById('tab-'+name).classList.add('active');
-  document.getElementById('nav-'+name).classList.add('active');
-}
-
-// Charts
-new Chart(document.getElementById('leaveDonut'),{
+new Chart(document.getElementById('donut'),{
   type:'doughnut',
-  data:{labels:['Approved','Pending','Rejected'],datasets:[{data:[{{ approved_count }},{{ pending_count }},{{ rejected_count }}],backgroundColor:['#10b981','#f59e0b','#ef4444'],borderColor:['#d1fae5','#fef3c7','#fee2e2'],borderWidth:2,hoverOffset:6}]},
+  data:{labels:['Approved','Pending','Rejected'],
+    datasets:[{data:[{{ approved_count }},{{ pending_count }},{{ rejected_count }}],
+      backgroundColor:['#10b981','#f59e0b','#ef4444'],
+      borderColor:['#d1fae5','#fef3c7','#fee2e2'],borderWidth:2,hoverOffset:6}]},
   options:{responsive:true,plugins:{legend:{position:'bottom',labels:{padding:14,font:{size:11},boxWidth:10}}},cutout:'68%'}
-});
-
-// Edit Modal
-function openEdit(id, name, att, bal){
-  document.getElementById('modalSub').textContent = 'Update attendance for ' + name;
-  document.getElementById('attInput').value = att;
-  document.getElementById('balInput').value = bal;
-  document.getElementById('editForm').action = '/update-attendance/' + id + '/';
-  document.getElementById('editModal').classList.add('show');
-}
-function closeEdit(){
-  document.getElementById('editModal').classList.remove('show');
-}
-document.getElementById('editModal').addEventListener('click', function(e){
-  if(e.target === this) closeEdit();
 });
 </script>
 </body>
