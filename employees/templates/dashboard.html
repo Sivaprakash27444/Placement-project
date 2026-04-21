@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>LeaveFlow — Dashboard</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Inter',sans-serif;background:#f4f6fb;color:#1a1d2e}
+/* SIDEBAR */
+.sidebar{position:fixed;top:0;left:0;height:100vh;width:250px;background:linear-gradient(180deg,#0f0c29,#302b63);z-index:200;display:flex;flex-direction:column;box-shadow:4px 0 30px rgba(0,0,0,0.25)}
+.sb-logo{padding:24px 20px;border-bottom:1px solid rgba(255,255,255,0.07);display:flex;align-items:center;gap:13px}
+.sb-logo-icon{width:42px;height:42px;border-radius:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.sb-logo-icon.emp{background:linear-gradient(135deg,#667eea,#764ba2)}
+.sb-logo-icon.mgr{background:linear-gradient(135deg,#f093fb,#f5576c)}
+.sb-logo-icon i{color:white;font-size:18px}
+.sb-title{color:white;font-size:16px;font-weight:700}
+.sb-sub{color:rgba(255,255,255,0.35);font-size:10px;font-weight:400}
+.sb-nav{flex:1;padding:16px 12px;overflow-y:auto}
+.sb-section{font-size:10px;font-weight:600;color:rgba(255,255,255,0.22);text-transform:uppercase;letter-spacing:.08em;padding:12px 12px 6px}
+.sb-link{display:flex;align-items:center;gap:12px;padding:11px 12px;border-radius:10px;color:rgba(255,255,255,0.5);text-decoration:none;font-size:13px;font-weight:500;margin-bottom:2px;transition:all 0.2s;cursor:pointer}
+.sb-link:hover{background:rgba(255,255,255,0.07);color:rgba(255,255,255,0.85)}
+.sb-link.active{background:rgba(102,126,234,0.25);color:white}
+.sb-link.active-mgr{background:rgba(240,147,251,0.2);color:white}
+.sb-link i{width:18px;text-align:center;font-size:14px;flex-shrink:0}
+.sb-badge{margin-left:auto;background:rgba(239,68,68,0.8);color:white;font-size:10px;font-weight:700;padding:2px 7px;border-radius:10px}
+.sb-footer{padding:14px 12px;border-top:1px solid rgba(255,255,255,0.07)}
+.sb-user{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:10px;background:rgba(255,255,255,0.05)}
+.sb-avatar{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:700;color:white;flex-shrink:0}
+.sb-avatar.emp{background:linear-gradient(135deg,#667eea,#764ba2)}
+.sb-avatar.mgr{background:linear-gradient(135deg,#f093fb,#f5576c)}
+.sb-uname{color:white;font-size:12px;font-weight:600}
+.sb-urole{color:rgba(255,255,255,0.35);font-size:10px;text-transform:capitalize}
+/* MAIN */
+.main{margin-left:250px;min-height:100vh}
+/* TOPBAR */
+.topbar{background:white;padding:0 30px;height:64px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #eaedf5;position:sticky;top:0;z-index:100;box-shadow:0 1px 8px rgba(0,0,0,0.04)}
+.tb-left{display:flex;flex-direction:column}
+.tb-title{font-size:16px;font-weight:700;color:#1a1d2e}
+.tb-sub{font-size:12px;color:#8a8ea8}
+.tb-right{display:flex;align-items:center;gap:12px}
+.tb-btn{display:inline-flex;align-items:center;gap:7px;padding:9px 18px;border-radius:10px;font-size:13px;font-weight:600;text-decoration:none;border:none;cursor:pointer;transition:all 0.2s;font-family:'Inter',sans-serif}
+.tb-btn.primary{background:linear-gradient(135deg,#667eea,#764ba2);color:white;box-shadow:0 4px 14px rgba(102,126,234,0.3)}
+.tb-btn.primary:hover{transform:translateY(-1px);box-shadow:0 8px 20px rgba(102,126,234,0.4);color:white}
+.tb-btn.outline{background:white;color:#5a5f7a;border:1.5px solid #e4e7f0}
+.tb-btn.outline:hover{background:#f4f6fb;color:#1a1d2e}
+.role-tag{padding:5px 12px;border-radius:20px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em}
+.role-tag.emp{background:#eef0ff;color:#667eea}
+.role-tag.mgr{background:#fde8ff;color:#9333ea}
+/* CONTENT */
+.content{padding:28px 30px}
+/* WELCOME BANNER */
+.welcome-banner{background:linear-gradient(135deg,#0f0c29,#302b63);border-radius:18px;padding:28px 32px;margin-bottom:24px;display:flex;align-items:center;justify-content:space-between;overflow:hidden;position:relative}
+.welcome-banner::before{content:'';position:absolute;right:-40px;top:-40px;width:200px;height:200px;border-radius:50%;background:rgba(102,126,234,0.15)}
+.welcome-banner::after{content:'';position:absolute;right:60px;bottom:-60px;width:160px;height:160px;border-radius:50%;background:rgba(240,147,251,0.1)}
+.wb-text h2{font-size:22px;font-weight:800;color:white;margin-bottom:6px}
+.wb-text p{font-size:13px;color:rgba(255,255,255,0.5);max-width:400px}
+.wb-chips{display:flex;gap:10px;margin-top:14px;flex-wrap:wrap}
+.wb-chip{background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.1);border-radius:8px;padding:6px 12px;font-size:12px;color:rgba(255,255,255,0.7);display:flex;align-items:center;gap:6px}
+.wb-chip i{font-size:11px;color:rgba(255,255,255,0.4)}
+.wb-visual{position:relative;z-index:1;text-align:right}
+.att-circle{width:100px;height:100px;position:relative}
+.att-circle svg{transform:rotate(-90deg)}
+.att-center{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.att-pct{font-size:22px;font-weight:800;color:white;line-height:1}
+.att-lbl{font-size:9px;color:rgba(255,255,255,0.4);margin-top:2px}
+/* STATS */
+.stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:24px}
+.stat-card{background:white;border-radius:15px;padding:20px 22px;box-shadow:0 1px 8px rgba(0,0,0,0.05);position:relative;overflow:hidden;transition:transform 0.2s,box-shadow 0.2s}
+.stat-card:hover{transform:translateY(-3px);box-shadow:0 8px 24px rgba(0,0,0,0.1)}
+.stat-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;border-radius:3px 3px 0 0}
+.sc1::before{background:linear-gradient(90deg,#667eea,#764ba2)}
+.sc2::before{background:linear-gradient(90deg,#11998e,#38ef7d)}
+.sc3::before{background:linear-gradient(90deg,#f7971e,#ffd200)}
+.sc4::before{background:linear-gradient(90deg,#eb3349,#f45c43)}
+.stat-val{font-size:32px;font-weight:800;color:#1a1d2e;line-height:1}
+.stat-lbl{font-size:12px;color:#8a8ea8;font-weight:500;margin-top:5px}
+.stat-icon-bg{position:absolute;right:16px;top:50%;transform:translateY(-50%);width:52px;height:52px;border-radius:14px;display:flex;align-items:center;justify-content:center;opacity:0.08}
+.sc1 .stat-icon-bg{background:#667eea}.sc2 .stat-icon-bg{background:#11998e}
+.sc3 .stat-icon-bg{background:#f7971e}.sc4 .stat-icon-bg{background:#eb3349}
+.stat-icon-bg i{font-size:26px;color:#1a1d2e}
+.stat-trend{font-size:11px;margin-top:6px;display:flex;align-items:center;gap:4px}
+/* GRID */
+.grid-3-1{display:grid;grid-template-columns:2fr 1fr;gap:18px;margin-bottom:20px}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-bottom:20px}
+/* CARD */
+.card-box{background:white;border-radius:15px;padding:22px 24px;box-shadow:0 1px 8px rgba(0,0,0,0.05)}
+.card-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px}
+.card-title-row{display:flex;align-items:center;gap:8px}
+.card-icon{width:32px;height:32px;border-radius:9px;display:flex;align-items:center;justify-content:center}
+.ci-blue{background:#eef0ff}.ci-blue i{color:#667eea}
+.ci-green{background:#e8faf0}.ci-green i{color:#10b981}
+.ci-purple{background:#fde8ff}.ci-purple i{color:#9333ea}
+.ci-orange{background:#fff7e6}.ci-orange i{color:#f59e0b}
+.card-icon i{font-size:14px}
+.card-title{font-size:14px;font-weight:700;color:#1a1d2e}
+.card-sub{font-size:11px;color:#8a8ea8;margin-top:1px}
+/* TABLE */
+.data-table{width:100%;border-collapse:collapse}
+.data-table thead th{font-size:11px;font-weight:600;color:#9ca3af;text-transform:uppercase;letter-spacing:.05em;padding:10px 12px;border-bottom:1px solid #f0f2f8;white-space:nowrap}
+.data-table tbody td{padding:12px 12px;font-size:13px;color:#374151;border-bottom:1px solid #f9fafb;vertical-align:middle}
+.data-table tbody tr:last-child td{border-bottom:none}
+.data-table tbody tr:hover td{background:#f9fafb}
+/* BADGES */
+.badge-pill{display:inline-flex;align-items:center;gap:5px;padding:4px 10px;border-radius:20px;font-size:11px;font-weight:600}
+.bp{background:#fffbeb;color:#d97706}.ba{background:#ecfdf5;color:#059669}.br{background:#fef2f2;color:#dc2626}
+.dept-badge{font-size:10px;padding:3px 8px;border-radius:6px;font-weight:600;background:#eef0ff;color:#667eea}
+.type-badge{font-size:10px;padding:3px 8px;border-radius:6px;font-weight:600;background:#f3f4f6;color:#6b7280}
+/* EMPLOYEE AVATAR */
+.emp-row{display:flex;align-items:center;gap:10px}
+.emp-av{width:32px;height:32px;border-radius:9px;display:flex;align-items:center;justify-content:center;color:white;font-weight:700;font-size:13px;flex-shrink:0;background:linear-gradient(135deg,#667eea,#764ba2)}
+.emp-av.mgr-av{background:linear-gradient(135deg,#f093fb,#f5576c)}
+.emp-name{font-weight:600;font-size:13px;color:#1a1d2e}
+.emp-email{font-size:11px;color:#9ca3af}
+/* ACTION BTNS */
+.act-btn{display:inline-flex;align-items:center;gap:5px;padding:6px 12px;border-radius:8px;font-size:11px;font-weight:600;text-decoration:none;border:none;cursor:pointer;font-family:'Inter',sans-serif;transition:all 0.15s}
+.act-approve{background:#ecfdf5;color:#059669}.act-approve:hover{background:#059669;color:white}
+.act-reject{background:#fef2f2;color:#dc2626;margin-left:6px}.act-reject:hover{background:#dc2626;color:white}
+/* ATTENDANCE */
+.att-bar-wrap{margin-top:5px}
+.att-num{font-size:13px;font-weight:700;color:#1a1d2e}
+.att-bar{height:6px;border-radius:3px;background:#f3f4f6;margin-top:4px;overflow:hidden}
+.att-fill{height:100%;border-radius:3px;transition:width 1s ease}
+.att-fill.excellent{background:linear-gradient(90deg,#11998e,#38ef7d)}
+.att-fill.average{background:linear-gradient(90deg,#f7971e,#ffd200)}
+.att-fill.poor{background:linear-gradient(90deg,#eb3349,#f45c43)}
+.att-status{font-size:10px;font-weight:600;margin-top:3px}
+.att-status.excellent{color:#059669}.att-status.average{color:#d97706}.att-status.poor{color:#dc2626}
+/* MINI CHART INSIDE CARD */
+.chart-wrap{position:relative;height:200px;display:flex;align-items:center;justify-content:center}
+/* LEAVE TYPE LEGEND */
+.legend-list{display:flex;flex-direction:column;gap:9px;margin-top:14px}
+.legend-item{display:flex;align-items:center;justify-content:space-between;font-size:12px}
+.legend-dot{width:10px;height:10px;border-radius:3px;flex-shrink:0;margin-right:8px}
+.legend-label{display:flex;align-items:center;color:#6b7280}
+.legend-val{font-weight:700;color:#1a1d2e}
+/* PROGRESS CIRCLES */
+.prog-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:8px}
+.prog-item{text-align:center;background:#f9fafb;border-radius:12px;padding:16px 10px}
+.prog-num{font-size:24px;font-weight:800;color:#1a1d2e}
+.prog-lbl{font-size:11px;color:#9ca3af;margin-top:3px}
+.prog-bar{height:5px;border-radius:3px;background:#f0f2f8;margin-top:8px}
+.prog-bar-fill{height:100%;border-radius:3px}
+/* EMPTY STATE */
+.empty-state{text-align:center;padding:40px 20px;color:#9ca3af}
+.empty-state i{font-size:40px;opacity:0.3;margin-bottom:12px}
+.empty-state p{font-size:13px}
+/* TAG */
+.section-title{font-size:17px;font-weight:700;color:#1a1d2e;margin-bottom:4px}
+.section-sub{font-size:13px;color:#9ca3af;margin-bottom:20px}
+/* NOTIFICATION DOT */
+.notif{width:8px;height:8px;background:#ef4444;border-radius:50%;flex-shrink:0}
+/* SCROLLABLE TABLE */
+.table-scroll{overflow-x:auto}
+/* DIVIDER */
+.divider-h{height:1px;background:#f0f2f8;margin:18px 0}
+</style>
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<div class="sidebar">
+  <div class="sb-logo">
+    <div class="sb-logo-icon {% if role == 'MANAGER' %}mgr{% else %}emp{% endif %}">
+      <i class="fas {% if role == 'MANAGER' %}fa-shield-halved{% else %}fa-calendar-check{% endif %}"></i>
+    </div>
+    <div>
+      <div class="sb-title">LeaveFlow</div>
+      <div class="sb-sub">{% if role == 'MANAGER' %}Manager Panel{% else %}Employee Portal{% endif %}</div>
+    </div>
+  </div>
+
+  <nav class="sb-nav">
+    <div class="sb-section">Main</div>
+    <a href="{% url 'dashboard' %}" class="sb-link {% if role == 'MANAGER' %}active-mgr{% else %}active{% endif %}">
+      <i class="fas fa-th-large"></i>Dashboard
+    </a>
+    {% if role == 'EMPLOYEE' %}
+    <a href="{% url 'apply_leave' %}" class="sb-link"><i class="fas fa-plus-circle"></i>Apply for Leave</a>
+    {% endif %}
+
+    {% if role == 'MANAGER' %}
+    <div class="sb-section">Management</div>
+    <a href="#requests-section" class="sb-link"><i class="fas fa-inbox"></i>Leave Requests{% if pending %}<span class="sb-badge">{{ pending }}</span>{% endif %}</a>
+    <a href="#team-section" class="sb-link"><i class="fas fa-users"></i>Team Attendance</a>
+    {% endif %}
+
+    <div class="sb-section">Account</div>
+    <a href="{% url 'logout' %}" class="sb-link"><i class="fas fa-right-from-bracket"></i>Sign Out</a>
+  </nav>
+
+  <div class="sb-footer">
+    <div class="sb-user">
+      <div class="sb-avatar {% if role == 'MANAGER' %}mgr{% else %}emp{% endif %}">{{ employee.name|first }}</div>
+      <div>
+        <div class="sb-uname">{{ employee.name }}</div>
+        <div class="sb-urole">{{ role|lower }} · {{ employee.department }}</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MAIN -->
+<div class="main">
+  <!-- TOPBAR -->
+  <div class="topbar">
+    <div class="tb-left">
+      <div class="tb-title">
+        {% if role == 'MANAGER' %}Manager Dashboard{% else %}My Dashboard{% endif %}
+      </div>
+      <div class="tb-sub">{% now "l, N j, Y" %}</div>
+    </div>
+    <div class="tb-right">
+      <span class="role-tag {% if role == 'MANAGER' %}mgr{% else %}emp{% endif %}">
+        <i class="fas {% if role == 'MANAGER' %}fa-shield-halved{% else %}fa-user{% endif %} me-1"></i>{{ role|title }}
+      </span>
+      {% if role == 'EMPLOYEE' %}
+      <a href="{% url 'apply_leave' %}" class="tb-btn primary"><i class="fas fa-plus"></i>Apply Leave</a>
+      {% endif %}
+      <a href="{% url 'logout' %}" class="tb-btn outline"><i class="fas fa-right-from-bracket"></i>Logout</a>
+    </div>
+  </div>
+
+  <!-- CONTENT -->
+  <div class="content">
+
+    <!-- WELCOME BANNER -->
+    <div class="welcome-banner">
+      <div class="wb-text">
+        <h2>Hello, {{ employee.name }} 👋</h2>
+        <p>{% if role == 'MANAGER' %}You have {{ pending }} pending leave request{{ pending|pluralize }} awaiting your approval.{% else %}You have {{ employee.leave_balance }} leave days remaining. Your attendance stands at {{ employee.attendance_percent }}%.{% endif %}</p>
+        <div class="wb-chips">
+          <div class="wb-chip"><i class="fas fa-building"></i>{{ employee.department }}</div>
+          <div class="wb-chip"><i class="fas fa-envelope"></i>{{ employee.email }}</div>
+          {% if role == 'EMPLOYEE' %}<div class="wb-chip"><i class="fas fa-suitcase"></i>{{ employee.leave_balance }} days left</div>{% endif %}
+          {% if role == 'MANAGER' %}<div class="wb-chip"><i class="fas fa-users"></i>{{ total_emp }} team member{{ total_emp|pluralize }}</div>{% endif %}
+        </div>
+      </div>
+      <div class="wb-visual">
+        <div class="att-circle">
+          <svg width="100" height="100" viewBox="0 0 100 100">
+            <circle cx="50" cy="50" r="42" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="8"/>
+            <circle cx="50" cy="50" r="42" fill="none" stroke="url(#grad)" stroke-width="8" stroke-linecap="round"
+              stroke-dasharray="{{ employee.attendance_percent|floatformat:0 }} 264" style="stroke-dasharray:calc({{ employee.attendance_percent }} * 2.64px) 264px"/>
+            <defs><linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" stop-color="#667eea"/><stop offset="100%" stop-color="#f093fb"/></linearGradient></defs>
+          </svg>
+          <div class="att-center"><div class="att-pct">{{ employee.attendance_percent }}%</div><div class="att-lbl">Attendance</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- STATS ROW -->
+    <div class="stats-row">
+      {% if role == 'EMPLOYEE' %}
+      <div class="stat-card sc1"><div class="stat-val">{{ my_leaves.count }}</div><div class="stat-lbl">Total Requests</div><div class="stat-icon-bg"><i class="fas fa-file-lines"></i></div></div>
+      <div class="stat-card sc2"><div class="stat-val">{{ approved }}</div><div class="stat-lbl">Approved</div><div class="stat-icon-bg"><i class="fas fa-check-circle"></i></div></div>
+      <div class="stat-card sc3"><div class="stat-val">{{ pending }}</div><div class="stat-lbl">Pending</div><div class="stat-icon-bg"><i class="fas fa-hourglass-half"></i></div></div>
+      <div class="stat-card sc4"><div class="stat-val">{{ rejected }}</div><div class="stat-lbl">Rejected</div><div class="stat-icon-bg"><i class="fas fa-times-circle"></i></div></div>
+      {% else %}
+      <div class="stat-card sc1"><div class="stat-val">{{ total_emp }}</div><div class="stat-lbl">Total Employees</div><div class="stat-icon-bg"><i class="fas fa-users"></i></div></div>
+      <div class="stat-card sc2"><div class="stat-val">{{ approved }}</div><div class="stat-lbl">Approved</div><div class="stat-icon-bg"><i class="fas fa-check-circle"></i></div></div>
+      <div class="stat-card sc3"><div class="stat-val">{{ pending }}</div><div class="stat-lbl">Pending Approval</div><div class="stat-icon-bg"><i class="fas fa-hourglass-half"></i></div></div>
+      <div class="stat-card sc4"><div class="stat-val">{{ rejected }}</div><div class="stat-lbl">Rejected</div><div class="stat-icon-bg"><i class="fas fa-times-circle"></i></div></div>
+      {% endif %}
+    </div>
+
+    <!-- CHARTS + TABLE ROW -->
+    <div class="grid-3-1">
+      {% if role == 'EMPLOYEE' %}
+      <!-- MY LEAVE TABLE -->
+      <div class="card-box">
+        <div class="card-head">
+          <div class="card-title-row"><div class="card-icon ci-blue"><i class="fas fa-history"></i></div><div><div class="card-title">My Leave History</div><div class="card-sub">All your submitted requests</div></div></div>
+        </div>
+        <div class="table-scroll">
+        <table class="data-table">
+          <thead><tr><th>Type</th><th>From</th><th>To</th><th>Days</th><th>Reason</th><th>Applied</th><th>Status</th></tr></thead>
+          <tbody>
+          {% for leave in my_leaves %}
+          <tr>
+            <td><span class="type-badge">{{ leave.leave_type }}</span></td>
+            <td>{{ leave.start_date }}</td><td>{{ leave.end_date }}</td>
+            <td><strong>{{ leave.days }}</strong></td>
+            <td style="max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ leave.reason }}</td>
+            <td>{{ leave.applied_on }}</td>
+            <td>{% if leave.status == 'APPROVED' %}<span class="badge-pill ba"><i class="fas fa-check"></i>Approved</span>
+                {% elif leave.status == 'REJECTED' %}<span class="badge-pill br"><i class="fas fa-times"></i>Rejected</span>
+                {% else %}<span class="badge-pill bp"><i class="fas fa-clock"></i>Pending</span>{% endif %}</td>
+          </tr>
+          {% empty %}
+          <tr><td colspan="7"><div class="empty-state"><i class="fas fa-calendar-xmark"></i><p>No leave requests yet.<br>Click Apply for Leave to get started.</p></div></td></tr>
+          {% endfor %}
+          </tbody>
+        </table>
+        </div>
+      </div>
+
+      {% else %}
+      <!-- MANAGER: ALL REQUESTS TABLE -->
+      <div class="card-box" id="requests-section">
+        <div class="card-head">
+          <div class="card-title-row"><div class="card-icon ci-purple"><i class="fas fa-inbox"></i></div><div><div class="card-title">All Leave Requests</div><div class="card-sub">Review and take action</div></div></div>
+        </div>
+        <div class="table-scroll">
+        <table class="data-table">
+          <thead><tr><th>Employee</th><th>Type</th><th>From</th><th>To</th><th>Days</th><th>Status</th><th>Action</th></tr></thead>
+          <tbody>
+          {% for leave in all_leaves %}
+          <tr>
+            <td><div class="emp-row"><div class="emp-av">{{ leave.employee.name|first }}</div><div><div class="emp-name">{{ leave.employee.name }}</div><div class="emp-email">{{ leave.employee.department }}</div></div></div></td>
+            <td><span class="type-badge">{{ leave.leave_type }}</span></td>
+            <td>{{ leave.start_date }}</td><td>{{ leave.end_date }}</td>
+            <td><strong>{{ leave.days }}</strong></td>
+            <td>{% if leave.status == 'APPROVED' %}<span class="badge-pill ba"><i class="fas fa-check"></i>Approved</span>
+                {% elif leave.status == 'REJECTED' %}<span class="badge-pill br"><i class="fas fa-times"></i>Rejected</span>
+                {% else %}<span class="badge-pill bp"><i class="fas fa-clock"></i>Pending</span>{% endif %}</td>
+            <td>{% if leave.status == 'PENDING' %}
+              <a href="{% url 'update_status' leave.id 'APPROVED' %}" class="act-btn act-approve"><i class="fas fa-check"></i>Approve</a>
+              <a href="{% url 'update_status' leave.id 'REJECTED' %}" class="act-btn act-reject"><i class="fas fa-times"></i>Reject</a>
+            {% else %}<span style="font-size:11px;color:#d1d5db">Done</span>{% endif %}</td>
+          </tr>
+          {% empty %}
+          <tr><td colspan="7"><div class="empty-state"><i class="fas fa-inbox"></i><p>No leave requests yet.</p></div></td></tr>
+          {% endfor %}
+          </tbody>
+        </table>
+        </div>
+      </div>
+      {% endif %}
+
+      <!-- CHART CARD -->
+      <div class="card-box">
+        <div class="card-head">
+          <div class="card-title-row"><div class="card-icon ci-green"><i class="fas fa-chart-pie"></i></div><div><div class="card-title">Leave Breakdown</div></div></div>
+        </div>
+        <div class="chart-wrap"><canvas id="donut"></canvas></div>
+        <div class="legend-list">
+          <div class="legend-item"><div class="legend-label"><div class="legend-dot" style="background:#059669"></div>Approved</div><div class="legend-val">{{ approved }}</div></div>
+          <div class="legend-item"><div class="legend-label"><div class="legend-dot" style="background:#d97706"></div>Pending</div><div class="legend-val">{{ pending }}</div></div>
+          <div class="legend-item"><div class="legend-label"><div class="legend-dot" style="background:#dc2626"></div>Rejected</div><div class="legend-val">{{ rejected }}</div></div>
+        </div>
+        {% if role == 'EMPLOYEE' %}
+        <div class="divider-h"></div>
+        <div class="prog-grid">
+          <div class="prog-item"><div class="prog-num">{{ employee.attendance_percent }}%</div><div class="prog-lbl">Attendance</div><div class="prog-bar"><div class="prog-bar-fill" style="width:{{ employee.attendance_percent }}%;background:linear-gradient(90deg,#667eea,#764ba2)"></div></div></div>
+          <div class="prog-item"><div class="prog-num">{{ employee.leave_balance }}</div><div class="prog-lbl">Days Left</div><div class="prog-bar"><div class="prog-bar-fill" style="width:{{ employee.leave_balance }}%;background:linear-gradient(90deg,#11998e,#38ef7d)"></div></div></div>
+        </div>
+        {% endif %}
+      </div>
+    </div>
+
+    <!-- MANAGER: EMPLOYEE ATTENDANCE TABLE -->
+    {% if role == 'MANAGER' %}
+    <div class="card-box" id="team-section">
+      <div class="card-head">
+        <div class="card-title-row"><div class="card-icon ci-orange"><i class="fas fa-chart-bar"></i></div><div><div class="card-title">Team Attendance Tracker</div><div class="card-sub">Live attendance percentage per employee</div></div></div>
+      </div>
+      <div class="table-scroll">
+      <table class="data-table">
+        <thead><tr><th>Employee</th><th>Department</th><th>Email</th><th>Leave Balance</th><th style="min-width:180px">Attendance</th><th>Rating</th></tr></thead>
+        <tbody>
+        {% for emp in all_employees %}
+        <tr>
+          <td><div class="emp-row"><div class="emp-av">{{ emp.name|first }}</div><div><div class="emp-name">{{ emp.name }}</div><div class="emp-email">Joined {{ emp.joined_date }}</div></div></div></td>
+          <td><span class="dept-badge">{{ emp.department }}</span></td>
+          <td style="font-size:12px;color:#9ca3af">{{ emp.email }}</td>
+          <td><strong>{{ emp.leave_balance }}</strong> <span style="font-size:11px;color:#9ca3af">days</span></td>
+          <td>
+            <div class="att-bar-wrap">
+              <div class="att-num">{{ emp.attendance_percent }}%</div>
+              <div class="att-bar"><div class="att-fill {% if emp.attendance_percent >= 90 %}excellent{% elif emp.attendance_percent >= 75 %}average{% else %}poor{% endif %}" style="width:{{ emp.attendance_percent }}%"></div></div>
+            </div>
+          </td>
+          <td>
+            {% if emp.attendance_percent >= 90 %}<span class="att-status excellent"><i class="fas fa-circle-check me-1"></i>Excellent</span>
+            {% elif emp.attendance_percent >= 75 %}<span class="att-status average"><i class="fas fa-circle-exclamation me-1"></i>Average</span>
+            {% else %}<span class="att-status poor"><i class="fas fa-circle-xmark me-1"></i>Poor</span>{% endif %}
+          </td>
+        </tr>
+        {% empty %}
+        <tr><td colspan="6"><div class="empty-state"><i class="fas fa-users"></i><p>No employees yet.</p></div></td></tr>
+        {% endfor %}
+        </tbody>
+      </table>
+      </div>
+    </div>
+    {% endif %}
+
+  </div><!-- /content -->
+</div><!-- /main -->
+
+<script>
+new Chart(document.getElementById('donut').getContext('2d'),{
+  type:'doughnut',
+  data:{
+    labels:['Approved','Pending','Rejected'],
+    datasets:[{
+      data:[{{ approved }},{{ pending }},{{ rejected }}],
+      backgroundColor:['#059669','#d97706','#dc2626'],
+      borderWidth:0, hoverOffset:8
+    }]
+  },
+  options:{
+    responsive:true,
+    plugins:{legend:{display:false},tooltip:{callbacks:{label:function(c){return ' '+c.label+': '+c.raw}}}},
+    cutout:'70%'
+  }
+});
+</script>
+</body>
+</html>
